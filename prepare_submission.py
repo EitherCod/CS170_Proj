@@ -4,8 +4,8 @@ import json
 from parse import validate_file
 
 if __name__ == '__main__':
-    outputs_dir = sys.argv[1]
-    submission_name = sys.argv[2]
+    outputs_dir = 'out'
+    submission_name = sys.argv[1]
     submission = {}
     for input_path in os.listdir("inputs"):
         graph_name = input_path.split('.')[0]
