@@ -91,7 +91,9 @@ def read_output_file(path, G):
             u = int(tokens[0])
             assert tokens[1].isdigit() and int(tokens[1]) in nodes
             v = int(tokens[1])
-            assert G.has_edge(u, v)
+            if not G.has_edge(u, v):
+                print("G does not have the edge: (" + str(u) + ", " + str(v) + ")")
+                assert False
 
         T = nx.parse_edgelist(lines, nodetype=int, data=(("weight", float),))
         for (u, v, w) in T.edges(data=True):
