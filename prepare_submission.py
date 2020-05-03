@@ -6,8 +6,8 @@ from parse import validate_file
 # to run: python3 prepare_submission.py submission.json
 
 if __name__ == '__main__':
-    outputs_dir = 'out'
-    submission_name = sys.argv[1]
+    outputs_dir = sys.argv[1]
+    submission_name = sys.argv[2]
     submission = {}
     for input_path in os.listdir("inputs"):
         graph_name = input_path.split('.')[0]
