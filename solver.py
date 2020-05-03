@@ -102,9 +102,37 @@ def solve(G):
     while iters > 0:
         dom_mst, iters = remove_leaves_cost(dom_mst)
 
+    # Dom Set but add all edges to center
+    X1 = nx.Graph()
+    for k in dom_set:
+        if k != centerList[0]:
+            path = shortest_paths[k][centerList[0]]
+            lis = []
+            for i in range(len(path) - 1):
+                v = path[i]
+                u = path[i + 1]
+                p = 0
+                try:
+                    # this errors if the edge does not exist
+                    p = X1.edges[v, u]
+                except:
+                    # if the edge deosn't exist, add it
+                    w = G.edges[v, u]['weight']
+                    e = (v, u, w)
+                    # print(e)
+                    lis.append(e)
+            # print(paths)
+            if (lis):
+                X1.add_weighted_edges_from(lis)
+    dom_mst2 = nx.minimum_spanning_tree(X1, 'weight')
+    iters = 1
+    while iters > 0:
+        dom_mst2, iters = remove_leaves_cost(dom_mst2)
+
     # Final section: display data and choose best method
 
     dom = ['none', float('inf'), None]
+    dom2 = ['none', float('inf'), None]
     # sometimes the dominating set method produces a null value.
     # this typically happens on graphs where the best answer
     # is a single vertex, with no edges. We should fix this bug.
@@ -123,7 +151,14 @@ def solve(G):
     cost_mst = ["Cost-First MST", cost3, min_spanning_tree_cost]
     print("Cost-First MST: " + str(cost3))
 
-    best = min([dom, mst, cost_mst], key=lambda x: x[1])
+    if not dom_mst2:
+        print("Dom mst is null")
+    else:
+        cost4 = average_pairwise_distance_fast(dom_mst2)
+        dom2 = ["Dominating Set2", cost4, dom_mst2]
+        print("Dominating Set2: " + str(cost4))
+
+    best = min([dom, mst, cost_mst, dom2], key=lambda x: x[1])
     print(best[0] + ' was best!')
     return best[2], best[0]
 
