@@ -57,16 +57,14 @@ def solve(G):
     # set the weight of each node (to be used in the
     # calculation of dominating set)
     centerList = nx.algorithms.distance_measures.barycenter(G, weight='weight')
-    # calculate distances of all vertices to center
-    distanceToCenters, pathToCenters = nx.algorithms.shortest_paths.weighted.multi_source_dijkstra(G, centerList, weight='weight')
-    # set the weights for dom set
-    for v in G.nodes:
-        G.nodes[v]['w'] = distanceToCenters[v]
-    # calculate a dominating set, using a provided algo
-    dom_set = list(nx.algorithms.approximation.dominating_set.min_weighted_dominating_set(G, weight='w'))
 
     # calculates a collection of all shortest paths
     shortest_paths = nx.algorithms.shortest_paths.generic.shortest_path(G, weight='weight')
+    # calculate distances of all vertices to center
+    distanceToCenters, pathToCenters = nx.algorithms.shortest_paths.weighted.single_source_dijkstra(G, centerList[0], weight='weight')
+    # set the weights for dom set
+    # calculate a dominating set, using a provided algo
+    dom_set = list(nx.algorithms.approximation.dominating_set.min_weighted_dominating_set(G, weight='w'))
 
     # build a new graph based on our dominating set
     X = nx.Graph()
