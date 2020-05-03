@@ -22,8 +22,21 @@ def solve(G):
         return G, 'None'
 
     # nx documentation here: https://networkx.github.io/documentation/stable/tutorial.html
+    # Pre-Check Method: Find highest degree vertex check if dominating set -> return just the vertex if it is
 
-        # Method 1: MST Pruning
+    preLargestdeg = -1
+    preVertex = -1
+    for v in G.nodes:
+        if G.degree[v] > preLargestdeg:
+            preVertex = v
+            preLargestdeg = G.degree[v]
+    if nx.algorithms.dominating.is_dominating_set(G, [preVertex]):
+        oneVGraph = nx.Graph()
+        oneVGraph.add_node(preVertex)
+        print("Found Single Node Solution")
+        return oneVGraph, 0
+
+    # Method 1: MST Pruning
 
     # Generate an mst
     min_spanning_tree = nx.minimum_spanning_tree(G, 'weight')
