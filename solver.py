@@ -43,7 +43,7 @@ def solve(G):
 
     # set the weight of each node (to be used in the
     # calculation of dominating set)
-    centerList = nx.center(G)
+    centerList = nx.algorithms.distance_measures.barycenter(G, weight='weight')
     # calculate distances of all vertices to center
     distanceToCenters, pathToCenters = nx.algorithms.shortest_paths.weighted.multi_source_dijkstra(G, centerList, weight='weight')
     # set the weights for dom set
@@ -190,7 +190,10 @@ def remove_leaves_cost(min_tree):
     iters = -1
     removed = 1
     while removed > 0:
-        min_tree, leaves, removed = prune_leaves_cost(leaves, min_tree)
+        try:
+            min_tree, leaves, removed = prune_leaves_cost(leaves, min_tree)
+        except:
+            return min_tree, -1
         iters += 1
 
     return min_tree, iters
