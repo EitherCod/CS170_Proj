@@ -19,7 +19,8 @@ def solve(G):
     # TODO: your code here!
     # if no edges, return G
     if not nx.number_of_edges(G):
-        return G, 'None'
+        print("No edge solution")
+        return G, 'No edges'
 
     # nx documentation here: https://networkx.github.io/documentation/stable/tutorial.html
     # Pre-Check Method: Find highest degree vertex check if dominating set -> return just the vertex if it is
@@ -34,7 +35,7 @@ def solve(G):
         oneVGraph = nx.Graph()
         oneVGraph.add_node(preVertex)
         print("Found Single Node Solution")
-        return oneVGraph, 0
+        return oneVGraph, "Single Node Solution"
 
     # Method 1: MST Pruning
 
@@ -217,8 +218,8 @@ def prune_leaves(leaves, min_tree, G):
                 kept_leaves.append(leaf)
             else:
                 removed += 1
-    if (removed):
-        print("(Removal) We removed " + str(removed) + " leaves in this iter")
+    #if (removed):
+        #print("(Removal) We removed " + str(removed) + " leaves in this iter")
     return min_tree, kept_leaves, removed
 
 
@@ -265,8 +266,8 @@ def prune_leaves_cost(leaves, min_tree):
                 kept_leaves.append(leaf)
             else:
                 removed += 1
-    if (removed):
-        print("(Cost) We removed " + str(removed) + " leaves in this iter")
+    #if (removed):
+        #print("(Cost) We removed " + str(removed) + " leaves in this iter")
     return min_tree, kept_leaves, removed
 
 
@@ -307,7 +308,10 @@ if __name__ == '__main__':
         total += 1
     best_method = max(methods, key=methods.get)
     percent = (float)(methods[best_method] * 100) / total
+    print()
     print("The best method is " + str(best_method) + ", at " + str(percent) + "%")
+    for m in methods:
+        print(str(m) + ": " + str((methods[m] * 100) / total) + "%")
 
     # Avg-weight/Cost-Checking Hybird Method:
     # this is outperformed by full cost-checking method,
